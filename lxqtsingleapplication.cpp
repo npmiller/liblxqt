@@ -73,7 +73,7 @@ SingleApplication::SingleApplication(int &argc, char **argv, StartOptions option
             QStringLiteral("/"),
             QStringLiteral("org.lxqt.SingleApplication"),
             QStringLiteral("activateWindow"));
-        QDBusConnection::sessionBus().send(msg);
+        QDBusConnection::sessionBus().call(msg);
 
         ::exit(0);
     }
