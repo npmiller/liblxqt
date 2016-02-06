@@ -31,6 +31,7 @@
 #include "lxqtapplication.h"
 
 class QWidget;
+class SingleApplicationAdaptor;
 
 namespace LXQt {
 
@@ -146,6 +147,7 @@ public Q_SLOTS:
 
 private:
     QWidget *mActivationWindow;
+    SingleApplicationAdaptor *mAdaptor;
 };
 
 #if defined(lxqtSingleApp)

@@ -37,12 +37,12 @@ using namespace LXQt;
 
 SingleApplication::SingleApplication(int &argc, char **argv, StartOptions options)
     : Application(argc, argv),
-    mActivationWindow(0)
+    mActivationWindow(0),
+    mAdaptor(nullptr)
 {
     QString service =
         QString::fromLatin1("org.lxqt.%1").arg(QApplication::applicationName());
 
-    SingleApplicationAdaptor *mAdaptor = new SingleApplicationAdaptor(this);
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if (!bus.isConnected()) {
@@ -64,6 +64,7 @@ SingleApplication::SingleApplication(int &argc, char **argv, StartOptions option
     bool registered = (bus.registerService(service) ==
                        QDBusConnectionInterface::ServiceRegistered);
     if (registered) { // We are the primary instance
+        mAdaptor = new SingleApplicationAdaptor(this);
         QLatin1String objectPath("/");
         bus.registerObject(objectPath, mAdaptor,
             QDBusConnection::ExportAllSlots);
@@ -80,6 +81,9 @@ SingleApplication::SingleApplication(int &argc, char **argv, StartOptions option
 
 SingleApplication::~SingleApplication()
 {
+    if (nullptr != mAdaptor) {
+        delete mAdaptor;
+    }
 }
 
 void SingleApplication::setActivationWindow(QWidget *w)
